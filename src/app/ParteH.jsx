@@ -8,7 +8,7 @@ export function TiempoReal({num}){
   const infoFf = useSelector(state => state.infoF.carga);
 
 
-   const timeZone = infoFf?.data?.timezone
+   const timeZone = infoFf?.data[0]?.timezone
     const tiempoReal = DateTime.now().setZone(timeZone)
     const horas = tiempoReal.hour + num 
 
@@ -28,11 +28,11 @@ export default  function  ParteH({ numero, dia = {},indicador = 0}) {
 
 
   
-  const timesH =  infoFf?.data?.hourly?.time || [];
-  const weathercodesH =  infoFf?.data?.hourly?.weathercode || [];
-  const timeZone =  infoFf?.data?.timezone  || []
+  const timesH =  infoFf?.data[0]?.hourly?.time || [];
+  const weathercodesH =  infoFf?.data[0]?.hourly?.weathercode || [];
+  const timeZone =  infoFf?.data[0]?.timezone  || []
    const tiempoReal =  DateTime.now().setZone(timeZone)
-   const temperaturers = infoFf?.data?.hourly?.temperature_2m || []
+   const temperaturers = infoFf?.data[0]?.hourly?.temperature_2m || []
    
  
 

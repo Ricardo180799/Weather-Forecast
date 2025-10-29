@@ -9,6 +9,7 @@ import Hora from "./ZonaHoraria"
 import Parte from"./ParteDia"
 import { useState } from "react";
 import EntregarDia from "./EntregarDia"
+import { Sun, Sunset } from "lucide-react"
   
 
 
@@ -16,13 +17,11 @@ import EntregarDia from "./EntregarDia"
 export default function Con1(){
     const [focus, setFocus] = useState(false);
    
-    const region = useSelector(state =>state.region.region)
+    const region = useSelector(state =>state.region.region[0] || "")
     const reg = useSelector(state =>state.region)
     const infoFf = useSelector(state =>state.infoF.carga)
-    const viento = infoFf?.data?.daily?.windspeed_10m_max[0]  || ""
-    
-     
-    const temp = infoFf?.data?.current_weather?.temperature
+    const viento = infoFf?.data[0]?.daily?.windspeed_10m_max[0]  || ""
+    const temp = infoFf?.data[0]?.current_weather?.temperature
     const conver = temp * 9/5 +32
     const poner5 = reg?.conversion?.grados === "c" ? `${temp}°C`: `${Math.round(conver,2) }°F`
 
@@ -45,16 +44,26 @@ export default function Con1(){
 
     
 
-     const timeZone =  infoFf?.data?.timezone  || []
-    const Dia =  infoFf?.data?.daily?.time || []
-    const tiempo = infoFf?.data?.hourly?.time || []
+     const timeZone =  infoFf?.data[0]?.timezone  || []
+    const Dia =  infoFf?.data[0]?.daily?.time || []
+    const tiempo = infoFf?.data[0]?.hourly?.time || []
     const firsTime = Dia[0]
     const Diaa = DateTime.fromISO(Dia,{zone:timeZone}).weekday
-     const weathercode =  infoFf?.data?.daily?.weathercode || []
+     const weathercode =  infoFf?.data[0]?.daily?.weathercode || []
    
-     const min = infoFf?.data?.daily?.temperature_2m_min || []
-     const max = infoFf?.data?.daily?.temperature_2m_max || []
-
+     const min = infoFf?.data[0]?.daily?.temperature_2m_min || []
+     const max = infoFf?.data[0]?.daily?.temperature_2m_max || []
+     const horAa = DateTime.now().setZone(timeZone)
+     let index = ""
+     if(Array.isArray(tiempo)){index = tiempo.findIndex(t=>{return DateTime.fromISO(t,{zone:timeZone}).hour === horAa.hour}) } 
+      const indiceUv = infoFf?.data?.[0].hourly?.uv_index?.[index] ?? ""
+      const indicev = indiceUv === 0 ? "No hay Peligro" : indiceUv
+    const visibility = infoFf?.data?.[0].hourly?.visibility?.[index] ?? ""
+    const pressure = infoFf?.data?.[0].hourly?.pressure_msl?.[index] ?? ""
+    const sunrise = infoFf?.data[0]?.daily?.sunrise?.[0] || []
+    const sunset = infoFf?.data[0]?.daily?.sunset?.[0] || []
+    const sunRise =  DateTime.fromISO(sunrise).toFormat("hh:mm a") ?? ""
+     const sunSet = DateTime.fromISO(sunset).toFormat("hh:mm a") ?? ""
   
     return( 
    <div className="flex flex-col w-full h-auto
@@ -62,21 +71,28 @@ export default function Con1(){
             <div className="flex flex-col w-[96%] h-52  bg-[url('/bg-today-large.svg')] bg-cover bg-center rounded-xl ml-1 items-center
             md:w-full
             lg:flex-row ">
-              <div className="flex flex-col my-auto ml-3 items-center lg:mb-20">
-                {cities.map(e =>{if(e.name.toLowerCase() === region.toLowerCase()){return (<h3 key={e.name} className=" text-2xl font-bold text-center mt-5">{e.country},{e.name}</h3>)}})}
+              <div className="flex flex-col font mt-0  ml-3 items-center lg:mb-20 lg:mt-12">
+                {cities.map(e =>{
+                  const nombreRegion = region?.toString().toLowerCase()
+                  if(e.name && nombreRegion && e.name.toLowerCase() === nombreRegion){return (<h3 key={e.name} className=" text-2xl font-bold text-center mt-2">{e.country},{e.name}</h3>)}})}
                 <Hora/>
                 
                 
               </div>
+               <div className="flex lg:mt-35 lg:mx-auto">
+                        <h3 className="mt-5 font-bold flex "><Image className="mr-2 -translate-y-3" src={"/sunrise.svg"}alt={"sunrise"} width={40} height={40}/>  {sunRise}</h3> 
+                        <h3 className="mt-5 ml-10 font-bold flex">{sunSet}<Image className=" ml-2 -translate-y-3" src={"/sunset.svg"}alt={"sunrise"} width={40} height={40}/></h3> 
+                      </div>
               <div className="flex mb-5 items-center mr-10 lg:ml-auto">
                      {weathercode[0] == 0 && <Image src="/icon-sunny.webp" alt="sunny" width={90} height={90} />}
-                           {weathercode[0] >= 1 && weathercode[0] <= 3 && <Image src="/icon-partly-cloudy.webp" alt="partly cloudy" width={90} height={90} />}
-                           {weathercode[0] >= 45 && weathercode[0] <= 48 && <Image src="/icon-fog.webp" alt="fog" width={90} height={90} />}
-                           {weathercode[0] >= 51 && weathercode[0] <= 57 && <Image src="/icon-drizzle.webp" alt="drizzle" width={90} height={90} />}
-                           {weathercode[0] >= 61 && weathercode[0] <= 67 && <Image src="/icon-rain.webp" alt="rain" width={90} height={90} />}
-                           {weathercode[0] >= 71 && weathercode[0] <= 77 && <Image src="/icon-snow.webp" alt="snow" width={90} height={90} />}
-                           {weathercode[0] >= 80 && weathercode[0] <= 99 && <Image src="/icon-storm.webp" alt="storm" width={90} height={90} />}
-                      <h3 className="font-bold text-5xl mt-2 ml-3">{poner5}</h3>
+                           {weathercode[0] >= 1 && weathercode[0] <= 3 && <Image src="/icon-partly-cloudy.webp" alt="partly cloudy" width={60} height={60} />}
+                           {weathercode[0] >= 45 && weathercode[0] <= 48 && <Image src="/icon-fog.webp" alt="fog" width={60} height={60} />}
+                           {weathercode[0] >= 51 && weathercode[0] <= 57 && <Image src="/icon-drizzle.webp" alt="drizzle" width={60} height={60} />}
+                           {weathercode[0] >= 61 && weathercode[0] <= 67 && <Image src="/icon-rain.webp" alt="rain" width={60} height={60} />}
+                           {weathercode[0] >= 71 && weathercode[0] <= 77 && <Image src="/icon-snow.webp" alt="snow" width={60} height={60} />}
+                           {weathercode[0] >= 80 && weathercode[0] <= 99 && <Image src="/icon-storm.webp" alt="storm" width={60} height={60} />}
+                      <h3 className="font-bold text-3xl mt-2 ml-3">{poner5}</h3>
+                     
               </div>        
             </div>
             {/*2 fila estadisticas*/}
@@ -102,7 +118,25 @@ export default function Con1(){
                 <h3 className="mt-2 ml-3">Precipitations</h3>
                 <h3 className="ml-3">{lluvia} </h3>
               </div>
+               <div className="max-w-40 flex flex-col grow min-w-39 text-center h-20 bg-[hsl(243,23%,24%)] rounded-xl   
+              md:max-w-60 md:min-w-30 md:w-40">
+                <h3 className="mt-2 ml-3">Indice UV</h3>
+                <h3 className="ml-3">{indicev} </h3>
+              </div>
+               <div className="max-w-40 flex flex-col grow min-w-39 text-center h-20 bg-[hsl(243,23%,24%)] rounded-xl   
+              md:max-w-60 md:min-w-30 md:w-40">
+                <h3 className="mt-2 ml-3">Visibilidad</h3>
+                <h3 className="ml-3">{visibility} m </h3>
+              </div>
+              <div className="max-w-40 flex flex-col grow min-w-39 text-center h-20 bg-[hsl(243,23%,24%)] rounded-xl   
+              md:max-w-60 md:min-w-30 md:w-40">
+                <h3 className="mt-2 ml-3">Presion</h3>
+                <h3 className="ml-3">{pressure} hPa </h3>
+              </div>
+              
+              
             </div>
+            
 
             {/*3 fila de estadisticas*/}
             <h4 className="text-md mt-7 ml-3">Daily forecast </h4>

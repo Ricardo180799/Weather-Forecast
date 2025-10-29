@@ -5,7 +5,7 @@ import { DateTime } from "luxon";
 
 
 export default function Hora(){
-   const tz = useSelector(state =>state.region.carga.data?.results[0]?.timezone)
+   const tz = useSelector(state =>state.region?.carga?.data?.[0]?.results?.[0].timezone || "") 
    
   
    

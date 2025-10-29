@@ -5,7 +5,7 @@ import { fetchh } from "./regionSlice";
 import { fetchA } from "./infoArchive";
 import { iniciar } from "./infoForecastSlice";
 
-export const integracion = async(dispatch,region) =>{
+export const integracion = async(dispatch,region,posicion) =>{
    
            
            if (!region) {
@@ -15,18 +15,19 @@ export const integracion = async(dispatch,region) =>{
       
       
         ;
-          try{ const regionData = await dispatch(fetchh(region.toUpperCase())).unwrap();
+          try{ const regionData = await dispatch(fetchh({dato:region.toUpperCase(),posicion:posicion})).unwrap()
            
           
       
           const [forecastData, archiveData] = await Promise.all([
-            dispatch(fetchF(regionData)),
-            dispatch(fetchA(regionData)),
+             dispatch(fetchF({ dato:regionData, posicion: posicion })),
+           
             
             
             
           ]);
-            const timezone = forecastData?.payload?.data?.timezone;
+          console.log(forecastData)
+            const timezone = forecastData?.payload?.timezone;
             const diad = DateTime.now().setZone(timezone);
             const dian = diad.toFormat("cccc");
 

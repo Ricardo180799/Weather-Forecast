@@ -2,6 +2,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import {insertar} from "./regionSlice"
 import {integracion} from "./Integracion"
+import { Star } from "lucide-react";
+import { favoritoss} from "./regionSlice";
+import { useState } from "react"; 
+import {filtrado} from "./regionSlice"
+import Estrella from "./Estrella"
 
 
 
@@ -203,16 +208,22 @@ export const cities = [
 ]; 
  
 export default function Menu({focus = false, setFocus}){
-    const region = useSelector(state => state.region.region)
+    const favoritos = useSelector(state => state.region.favoritos)
+    const region = useSelector(state => state.region.region[0] || "")
     const dispatch = useDispatch()
+    const[situado,setSituado] = useState(false)
+    const activado = "w-5 h-5 text-yellow-400 ml-2 mt-0.5 fill-yellow-400"
+    const desactivado = "w-5 h-5 text-yellow-400 ml-2 mt-0.5 hover:fill-yellow-400"
     return(
 <>
 {region != "" &&
-<div tabIndex={0} onFocus={()=>setFocus(true) } onBlur={()=>setFocus(false)} className="absolute mt-20 bg-[hsl(243,27%,20%)]   flex-col  w-[300px] h-[100px] borrounded-md overflow-scroll">
+<div tabIndex={0} onFocus={()=>setFocus(true) } onBlur={()=>setFocus(false)} className="absolute mt-20 bg-[hsl(243,27%,20%)]   flex-col  w-[300px] h-[100px] rounded-md overflow-scroll z">
     {cities.map(e=>{
         if(region  &&  e.name.toLowerCase().startsWith(region.toLowerCase())){
-            return(<h4 className="focus:scale-110" 
-                onMouseDown={()=>{dispatch(insertar(e.name));integracion(dispatch,e.name);setFocus(false)}} key={e.name}>{e.name}</h4>)
+          const esFavorito = favoritos.includes(e.name)
+            return(
+            <Estrella key={e.country} esFavorito={esFavorito} e={e} setFocus={setFocus}/>
+               )
             
         }else{return ""}
     })}

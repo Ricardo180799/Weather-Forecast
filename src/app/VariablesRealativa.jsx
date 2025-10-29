@@ -5,13 +5,13 @@ import { useSelector } from "react-redux";
 export default function VariablesRelativas() {
   const infoFf = useSelector((state) => state.infoF.carga);
 
-  if (!infoFf?.data?.hourly) {
+  if (!infoFf?.data[0]?.hourly) {
     // Devuelve valores seguros para evitar el error
     return { temperaturer: null, humidity: null, wind: null };
   }
 
   const now = DateTime.now().setZone(infoFf.data.timezone);
-  const times = infoFf.data.hourly.time;
+  const times = infoFf.data[0].hourly.time;
 
   let closestIndex = 0;
   let minDiff = Infinity;
@@ -29,9 +29,9 @@ export default function VariablesRelativas() {
   });
 
   return {
-    temperaturer: infoFf.data.hourly.temperature_2m[closestIndex],
-    humidity: infoFf.data.hourly.relative_humidity_2m[closestIndex],
-    wind: infoFf.data.hourly.windspeed_10m[closestIndex],
-    precipitations : infoFf.data.hourly.precipitation[closestIndex]
+    temperaturer: infoFf.data[0].hourly.temperature_2m[closestIndex],
+    humidity: infoFf.data[0].hourly.relative_humidity_2m[closestIndex],
+    wind: infoFf.data[0].hourly.windspeed_10m[closestIndex],
+    precipitations : infoFf.data[0].hourly.precipitation[closestIndex]
   };
 }

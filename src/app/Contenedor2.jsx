@@ -9,12 +9,24 @@ import { ChevronDown } from "lucide-react";
 import MenuDias from "./MenuDias";
 import { useState } from "react";
 import Temperaturas from "./TemperaturaHorasD"
+import {iniciar} from "./infoForecastSlice"
 
 
 
 export default function Con(){
   const [focus,setfocus] = useState(false)
-    const Dia = useSelector(state =>state.infoF.dia)
+  const Dia = useSelector(state =>state.infoF.dia)
+  const infoFf = useSelector(state =>state.infoF.carga)
+  const temp = infoFf?.data[0]?.current_weather?.temperature
+  const tz = useSelector(state =>state.infoF.timezone)
+  
+  const formatted =  DateTime.now().setZone(tz).toFormat("cccc")
+  const reg = useSelector(state =>state.region)
+  const dispatch = useDispatch()
+  const conversion = temp *9/5 +32
+
+  const poner20 = reg?.conversion?.grados === "c" ? `${temp}°C`:`${Math.round(conversion)}°F`
+  
     
    
      return( 
@@ -39,10 +51,11 @@ export default function Con(){
             <div className="  flex w-10/11 h-10  ml-3 mt-3 rounded-xl bg-[hsl(243,23%,30%)]
             md:h-20  
             lg:h-16">
-              <h2 className="my-auto ml-3  "><ParteH numero={0} dia={Dia}/></h2>
+              <h2 className="my-auto ml-3  ">{Dia === tz ?  <ParteH numero={0} dia={tz} />:<ParteH numero={0} dia={Dia}/>}       </h2>
               <h2 className="my-auto ml-auto mr-3 
               lg:text-xl"><TiempoReal num={0}/></h2>
-              <Temperaturas indicador={0} dia={Dia}/>
+             {Dia === formatted ?  <h2 className="my-auto ml-auto mr-3
+              lg:text-xl">{poner20 }</h2>  :<Temperaturas indicador={0} dia={Dia}/> }
             </div>
             <div className=" flex w-10/11 h-10  ml-3 mt-3 rounded-xl bg-[hsl(243,23%,30%)]
             md:h-20  lg:h-16">

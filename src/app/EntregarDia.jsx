@@ -26,7 +26,7 @@ export default function EntregarDia({ time = [], adelanto = 0, timeZone, code, m
   return (
     <div className="flex flex-col min-w-10   max-w-23 mx-1 h-25 bg-[hsl(243,23%,24%)] rounded-xl items-center  grow 
     sm:min-w-40
-    md:max-w-[220px] md:min-w-[146px]
+    md:max-w-[220px] md:min-w-[146px] 
     ">
       <h4 className="mt-1 ">{Dia} </h4>
       {code == 0 && <Image src="/icon-sunny.webp" alt="sunny" width={40} height={40} />}
@@ -36,10 +36,13 @@ export default function EntregarDia({ time = [], adelanto = 0, timeZone, code, m
       {code >= 61 && code <= 67 && <Image src="/icon-rain.webp" alt="rain" width={40} height={40} />}
       {code >= 71 && code <= 77 && <Image src="/icon-snow.webp" alt="snow" width={40} height={40} />}
       {code >= 80 && code <= 99 && <Image src="/icon-storm.webp" alt="storm" width={40} height={40} />}
-      <div className=" flex"> <h4 className=" text-sm
+      <div className=" flex"> <h4 className=" text-xs
       sm:text-base
-      xl:mr-4 lg:text-sm xl:text-base lg:p-2  md:p-1">{poner1}</h4>  <h4 className="ml-4 text-sm lg:text-sm
+      lg:text-xl
+      xl:mr-4 
+         lg:p-2  md:p-1">{poner1}</h4>  <h4 className="ml-4 text-xs 
       sm:text-base
-      xl:text-base lg:p-1  md:p-1">{poner2}</h4> </div>
+      lg:text-xl 
+       lg:p-2  md:p-1">{poner2}</h4> </div>
     </div>)
 }

@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function Parte({numero}){
 const infoFf = useSelector(state =>state.infoF.carga)
- const weatherCode = infoFf?.data?.daily?.weathercode
+ const weatherCode = infoFf?.data[0]?.daily?.weathercode
  
  
  
