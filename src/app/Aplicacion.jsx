@@ -82,10 +82,10 @@ export default function Tiempo() {
                   xl:w-40"
                   onClick={()=> isFavoritos(prev => !prev)}>
                     {favoritos && <  MenuFavoritos setFocus={setFocus}/>}
-                    Favoritos
+                    Favorites
                   </div>
                   <Link href={"./Comparacion"} className="flex items-center justify-center w-26 h-10 sm:w-32 sm:h-12 md:w-36 md:h-12 bg-blue-600 rounded-xl hover:border border-black hover:scale-105 text-white font-medium transition-transform mr-2
-                  xl:w-40">Comparar</Link>
+                  xl:w-40">Compare</Link>
                   </div>
         <h2  className="self-center mt-10 translate-y-0.5 mb-4 text-3xl text-center    font-bold   
          w-[180px]

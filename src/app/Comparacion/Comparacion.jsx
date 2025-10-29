@@ -54,7 +54,7 @@ const humidity2 =  carga?.data?.[2].hourly?.relative_humidity_2m?.[index2] ?? ""
               value={ region[1] ?? ""}
               onChange={(e)=>{dispatch(insertar({valor:e.target.value,posicion:1}))}}
               type="text"
-              placeholder="Nombre de la región"
+              placeholder="Region's name"
               className="rounded-xl px-3 py-2 w-full text-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
             <button
@@ -62,7 +62,7 @@ const humidity2 =  carga?.data?.[2].hourly?.relative_humidity_2m?.[index2] ?? ""
               onClick={()=>{integracion(dispatch,region[1],1)}}
               className="bg-indigo-600 hover:bg-indigo-700 rounded-xl py-2 font-semibold transition-all"
             >
-              Buscar
+              Search
             </button>
           </div>
 
@@ -95,14 +95,14 @@ const humidity2 =  carga?.data?.[2].hourly?.relative_humidity_2m?.[index2] ?? ""
               value={ region[2] ?? ""}
               onChange={(e)=>dispatch(insertar({valor:e.target.value,posicion:2}))}
               type="text"
-              placeholder="Nombre de la región"
+              placeholder="Region's name"
               className="rounded-xl px-3 py-2 w-full text-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
             <button
               onClick={()=>integracion(dispatch,region[2],2)}
               className="bg-indigo-600 hover:bg-indigo-700 rounded-xl py-2 font-semibold transition-all"
             >
-              Buscar
+              Search
             </button>
           </div>
 

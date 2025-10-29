@@ -72,16 +72,16 @@ export default function Con1(){
             md:w-full
             lg:flex-row ">
               <div className="flex flex-col font mt-0  ml-3 items-center lg:mb-20 lg:mt-12">
-                {cities.map(e =>{
+                {region == "" ?  <h2 className=" text-2xl font-bold text-center mt-2">City and region</h2> : cities.map(e =>{
                   const nombreRegion = region?.toString().toLowerCase()
-                  if(e.name && nombreRegion && e.name.toLowerCase() === nombreRegion){return (<h3 key={e.name} className=" text-2xl font-bold text-center mt-2">{e.country},{e.name}</h3>)}})}
+                  if(e.name && nombreRegion && e.name.toLowerCase() === nombreRegion){return (<h3 key={e.name} className=" text-2xl font-bold text-center mt-2">{e.country},{e.name}</h3>)}}) }
                 <Hora/>
                 
                 
               </div>
                <div className="flex lg:mt-35 lg:mx-auto">
-                        <h3 className="mt-5 font-bold flex "><Image className="mr-2 -translate-y-3" src={"/sunrise.svg"}alt={"sunrise"} width={40} height={40}/>  {sunRise}</h3> 
-                        <h3 className="mt-5 ml-10 font-bold flex">{sunSet}<Image className=" ml-2 -translate-y-3" src={"/sunset.svg"}alt={"sunrise"} width={40} height={40}/></h3> 
+                        <div className="mt-5 font-bold flex "><Image className="mr-2 -translate-y-3" src={"/sunrise.svg"}alt={"sunrise"} width={40} height={40}/>  {region == ""  ? <h3 className=" font-bold flex">SunRise </h3> : sunRise   }</div> 
+                        <div className="mt-5 ml-10 font-bold flex">{region == "" ? <h3 className="  font-bold flex">SunSet </h3> : sunSet   }<Image className=" ml-2 -translate-y-3" src={"/sunset.svg"}alt={"sunrise"} width={40} height={40}/></div> 
                       </div>
               <div className="flex mb-5 items-center mr-10 lg:ml-auto">
                      {weathercode[0] == 0 && <Image src="/icon-sunny.webp" alt="sunny" width={90} height={90} />}
@@ -91,7 +91,7 @@ export default function Con1(){
                            {weathercode[0] >= 61 && weathercode[0] <= 67 && <Image src="/icon-rain.webp" alt="rain" width={60} height={60} />}
                            {weathercode[0] >= 71 && weathercode[0] <= 77 && <Image src="/icon-snow.webp" alt="snow" width={60} height={60} />}
                            {weathercode[0] >= 80 && weathercode[0] <= 99 && <Image src="/icon-storm.webp" alt="storm" width={60} height={60} />}
-                      <h3 className="font-bold text-3xl mt-2 ml-3">{poner5}</h3>
+                      <div className="font-bold text-3xl mt-2 ml-3">{region == "" ? <h3 className="font-bold text-3xl mt-2 ml-3">Temperature</h3> :  poner5  }</div>
                      
               </div>        
             </div>
@@ -116,7 +116,7 @@ export default function Con1(){
               <div className="max-w-40 flex flex-col grow min-w-39 text-center h-20 bg-[hsl(243,23%,24%)] rounded-xl   
               md:max-w-60 md:min-w-30 md:w-40">
                 <h3 className="mt-2 ml-3">Precipitations</h3>
-                <h3 className="ml-3">{lluvia} </h3>
+                <div className="ml-3">{region == "" ? <h3  className="mt-2 ml-3"></h3>:lluvia  } </div>
               </div>
                <div className="max-w-40 flex flex-col grow min-w-39 text-center h-20 bg-[hsl(243,23%,24%)] rounded-xl   
               md:max-w-60 md:min-w-30 md:w-40">
